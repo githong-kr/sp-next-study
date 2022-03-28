@@ -15,6 +15,12 @@
     "jsx": "preserve",
     "incremental": true
   },
+  // tsconfig.json 내 추가
+  "baseUrl": ".",
+  "paths": {
+    "@libs/*": ["libs/*"],
+    "@components/*": ["components/*"]
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
