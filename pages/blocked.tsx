@@ -30,7 +30,7 @@ export default function Blocked() {
         <h1 className="pb-5 text-3xl text-gray-700">
           You have no cookie for access.
         </h1>
-        <p className="prose prose-code:text-purple-600">
+        <p className="prose prose-code:text-purple-600 leading-10">
           You&apos;re seeing this page because your cookie is not in your
           browser. Click below <code>Set Cookie Button</code> and go to the{' '}
           <Link href="/">

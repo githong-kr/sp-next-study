@@ -21,12 +21,15 @@ export function cls(...clsRequestObjectList: clsRequestParams[]) {
   clsRequestObjectList.map((clsRequestObject) => {
     if (!clsRequestObject.prefix) {
       resultClassName.push(
-        clsRequestObject.classNames ? clsRequestObject.classNames : ''
+        clsRequestObject.classNames ? clsRequestObject.classNames.trim() : ''
       );
     } else {
-      clsRequestObject.classNames?.split(' ').map((className) => {
-        resultClassName.push(`${clsRequestObject.prefix}:${className}`);
-      });
+      clsRequestObject.classNames
+        ?.trim()
+        .split(' ')
+        .map((className) => {
+          resultClassName.push(`${clsRequestObject.prefix}:${className}`);
+        });
     }
   });
 
