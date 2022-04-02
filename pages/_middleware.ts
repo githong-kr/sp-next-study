@@ -9,8 +9,15 @@ export const middleware = async (req: NextRequest, ev: NextFetchEvent) => {
   }
 
   // TODO : Redirects and rewrites
-  if (req.page.name === '/' && !req.cookies.helloToken) {
-    return NextResponse.redirect('http://localhost:3000/blocked');
+  if (
+    req.page.name === '/' &&
+    !req.cookies[process.env.NEXT_PUBLIC_COOKIE_NAME!]
+  ) {
+    return NextResponse.rewrite('http://localhost:3000/blocked');
+  }
+  // Tryng to access the /blocked page manually is disallowed
+  if (req.page.name === '/blocked') {
+    return new Response(null, { status: 404 });
   }
 
   // TODO : Handling unsupported browsers
