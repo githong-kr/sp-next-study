@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
+import getNewRedisClient from '@libs/server/redis';
 
-const cookie = (req: NextApiRequest, res: NextApiResponse) => {
+const cookie = async (req: NextApiRequest, res: NextApiResponse) => {
+  // TODO REDIS 연동 완료!
+  const redisClient = await getNewRedisClient();
+  console.log(await redisClient.get('test'));
+
   try {
     switch (req.method) {
       case 'PUT': {
