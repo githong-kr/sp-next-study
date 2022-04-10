@@ -10,13 +10,13 @@ export const middleware = async (req: NextRequest, ev: NextFetchEvent) => {
 
   // TODO : Redirects and rewrites
   if (
-    req.page.name === '/' &&
+    req.nextUrl.pathname !== '/blocked' &&
     !req.cookies[process.env.NEXT_PUBLIC_COOKIE_NAME!]
   ) {
     return NextResponse.rewrite('http://localhost:3000/blocked');
   }
   // Tryng to access the /blocked page manually is disallowed
-  if (req.page.name === '/blocked') {
+  if (req.nextUrl.pathname === '/blocked') {
     return new Response(null, { status: 404 });
   }
 
