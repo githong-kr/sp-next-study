@@ -56,7 +56,9 @@ const Home: NextPage<HomeProps> = ({ testData }: HomeProps) => {
       </div>
       <hr className="w-full border-teal-500" />
       <Link href="/rate_limit">
-        <Button>Test Api Rate Limiting</Button>
+        <a>
+          <Button>Test Api Rate Limiting</Button>
+        </a>
       </Link>
     </div>
   );

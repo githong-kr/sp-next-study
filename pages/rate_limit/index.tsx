@@ -1,10 +1,29 @@
 import Button from '@components/Button';
+import Selector from '@components/Selector';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+type RateLimiterAlgorithm =
+  | 'Leaky Bucket'
+  | 'Token Bucket'
+  | 'Fixed Window Counter'
+  | 'Sliding Window Log'
+  | 'Sliding Window Counter';
 
 export default function RateLimit() {
   const [requests, setRequests] = useState<number>(5);
   const [seconds, setSeconds] = useState<number>(10);
+  const algorithms: RateLimiterAlgorithm[] = [
+    'Leaky Bucket',
+    'Token Bucket',
+    'Fixed Window Counter',
+    'Sliding Window Log',
+    'Sliding Window Counter',
+  ];
+  const [rateLimiterAlgorithm, setRateLimiterAlgorithm] =
+    useState<RateLimiterAlgorithm>(algorithms[0]);
+  const [data, setData] = useState({});
 
   const onChangeRequests = (e: React.ChangeEvent<HTMLInputElement>) => {
     let stringValue = e.currentTarget.value;
@@ -24,6 +43,14 @@ export default function RateLimit() {
     setSeconds(+stringValue);
   };
 
+  const makeRequest = () => {
+    console.log(rateLimiterAlgorithm);
+  };
+
+  const DynamicComponent = dynamic(() => {
+    return import(`../../components/${rateLimiterAlgorithm.replace(/ /g, '')}`);
+  });
+
   return (
     <div className="flex flex-col items-center justify-center space-y-10">
       <div className="px-20 pt-20 text-center">
@@ -38,6 +65,9 @@ export default function RateLimit() {
           </Link>{' '}
           .
         </p>
+      </div>
+      <div>
+        <Selector setValue={setRateLimiterAlgorithm} list={algorithms} />
       </div>
       <div className="flex w-full justify-center space-x-2 px-20 text-center">
         <input
@@ -58,8 +88,9 @@ export default function RateLimit() {
         <p className="text-lg tracking-widest text-gray-600">seconds</p>
       </div>
       <div>
-          <Button>Make a request</Button>
+        <Button onClick={makeRequest}>Make a request</Button>
       </div>
+      <DynamicComponent {...data} />
     </div>
   );
 }
