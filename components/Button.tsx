@@ -21,8 +21,8 @@ export default function Button({
         { classNames: 'rounded-lg shadow-md' },
         { classNames: 'bg-teal-100 text-gray-500' },
         {
-          prefix: 'hover',
-          classNames: 'border-teal-700 bg-teal-500 text-gray-700',
+          classNames:
+            'hover:border-teal-700 hover:bg-teal-500 hover:text-gray-700',
         },
         loading ? { classNames: 'opacity-50' } : { classNames: '' }
       )}
