@@ -21,15 +21,6 @@ const Home: NextPage<HomeProps> = ({ testData }: HomeProps) => {
   }, []);
 
   const unSetCookie = async () => {
-    // setLoading(true);
-    // try {
-    //   const data = await fetch('http://localhost:3000/api/cookie', {
-    //     method: 'DELETE',
-    //   });
-    // } finally {
-    //   setLoading(false);
-    // }
-
     setCookie(process.env.NEXT_PUBLIC_COOKIE_NAME!, '', {
       path: '/',
       maxAge: -1,

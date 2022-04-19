@@ -1,6 +1,8 @@
 import { NextRequest, NextFetchEvent, NextResponse } from 'next/server';
 
 export const middleware = async (req: NextRequest, ev: NextFetchEvent) => {
+  const { pathname, origin } = req.nextUrl;
+
   // TODO : Authentication
 
   // TODO : Bot protection
@@ -13,10 +15,10 @@ export const middleware = async (req: NextRequest, ev: NextFetchEvent) => {
     req.page.name === '/' &&
     !req.cookies[process.env.NEXT_PUBLIC_COOKIE_NAME!]
   ) {
-    return NextResponse.rewrite('http://localhost:3000/blocked');
+    return NextResponse.rewrite(`${origin}/blocked`);
   }
   // Tryng to access the /blocked page manually is disallowed
-  if (req.page.name === '/blocked') {
+  if (pathname === '/blocked') {
     return new Response(null, { status: 404 });
   }
 

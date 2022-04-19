@@ -1,6 +1,6 @@
 import { RateLimitingData } from './FixedWindowCounter';
 
-export default function SlidingWindowLog({ ...data }: RateLimitingData) {
+export default function SlidingWindowLog({ apiPath }: RateLimitingData) {
   return (
     <div>
       <h1>SlidingWindowLog</h1>

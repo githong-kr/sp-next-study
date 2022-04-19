@@ -1,8 +1,10 @@
+import { ReactNode } from 'react';
+
 export interface RateLimitingData {
-  [key: string]: any;
+  apiPath: string;
 }
 
-export default function FixedWindowCounter({ ...data }: RateLimitingData) {
+export default function FixedWindowCounter({ apiPath }: RateLimitingData) {
   return (
     <div>
       <h1>FixedWindowCounter</h1>

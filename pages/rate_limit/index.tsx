@@ -1,8 +1,9 @@
-import Button from '@components/Button';
 import Selector from '@components/Selector';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
+import camelize from '@libs/server/camelize';
+import { RateLimitingData } from '@components/FixedWindowCounter';
 
 type RateLimiterAlgorithm =
   | 'Leaky Bucket'
@@ -12,8 +13,6 @@ type RateLimiterAlgorithm =
   | 'Sliding Window Counter';
 
 export default function RateLimit() {
-  const [requests, setRequests] = useState<number>(5);
-  const [seconds, setSeconds] = useState<number>(10);
   const algorithms: RateLimiterAlgorithm[] = [
     'Leaky Bucket',
     'Token Bucket',
@@ -23,33 +22,16 @@ export default function RateLimit() {
   ];
   const [rateLimiterAlgorithm, setRateLimiterAlgorithm] =
     useState<RateLimiterAlgorithm>(algorithms[0]);
-  const [data, setData] = useState({});
+  const apiPath = `api/rateLimit/${camelize(rateLimiterAlgorithm)}`;
 
-  const onChangeRequests = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let stringValue = e.currentTarget.value;
-    if (isNaN(+stringValue)) return;
-    if (+stringValue < 0) return;
-    if (+stringValue > 500) return;
-
-    setRequests(+stringValue);
-  };
-
-  const onChangeSeconds = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let stringValue = e.currentTarget.value;
-    if (isNaN(+stringValue)) return;
-    if (+stringValue < 0) return;
-    if (+stringValue > 30) return;
-
-    setSeconds(+stringValue);
-  };
-
-  const makeRequest = () => {
-    console.log(rateLimiterAlgorithm);
-  };
-
-  const DynamicComponent = dynamic(() => {
-    return import(`../../components/${rateLimiterAlgorithm.replace(/ /g, '')}`);
-  });
+  const DynamicComponent: React.ComponentType<RateLimitingData> = dynamic(
+    () => {
+      return import(
+        `../../components/${rateLimiterAlgorithm.replace(/ /g, '')}`
+      );
+    },
+    { ssr: false }
+  );
 
   return (
     <div className="flex flex-col items-center justify-center space-y-10">
@@ -69,28 +51,7 @@ export default function RateLimit() {
       <div>
         <Selector setValue={setRateLimiterAlgorithm} list={algorithms} />
       </div>
-      <div className="flex w-full justify-center space-x-2 px-20 text-center">
-        <input
-          className="w-12 appearance-none rounded-md border border-teal-500 px-2 text-center text-gray-500"
-          placeholder="5"
-          required
-          value={requests}
-          onChange={onChangeRequests}
-        />
-        <p className="text-lg tracking-widest text-gray-600">requests every </p>
-        <input
-          className="w-12 appearance-none rounded-md border border-teal-500 px-2 text-center text-gray-500"
-          placeholder="10"
-          required
-          value={seconds}
-          onChange={onChangeSeconds}
-        />
-        <p className="text-lg tracking-widest text-gray-600">seconds</p>
-      </div>
-      <div>
-        <Button onClick={makeRequest}>Make a request</Button>
-      </div>
-      <DynamicComponent {...data} />
+      <DynamicComponent apiPath={apiPath} />
     </div>
   );
 }

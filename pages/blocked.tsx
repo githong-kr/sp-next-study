@@ -12,15 +12,6 @@ export default function Blocked() {
   }, []);
 
   const saveCookie = async () => {
-    // setLoading(true);
-    // try {
-    //   const data = await fetch('http://localhost:3000/api/cookie', {
-    //     method: 'PUT',
-    //   });
-    // } finally {
-    //   setLoading(false);
-    // }
-
     setCookie(process.env.NEXT_PUBLIC_COOKIE_NAME!, 'hello', { path: '/' });
     setCookieValue('hello');
   };
@@ -30,7 +21,7 @@ export default function Blocked() {
         <h1 className="pb-5 text-3xl text-gray-700">
           You have no cookie for access.
         </h1>
-        <p className="prose prose-code:text-purple-600 leading-10">
+        <p className="prose leading-10 prose-code:text-purple-600">
           You&apos;re seeing this page because your cookie is not in your
           browser. Click below <code>Set Cookie Button</code> and go to the{' '}
           <Link href="/">
